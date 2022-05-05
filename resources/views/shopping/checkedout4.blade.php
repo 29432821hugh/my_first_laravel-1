@@ -1,12 +1,17 @@
 @extends('template.template')
 
 @section('pageTitle')
-    <title>訂單第四頁</title>
+    訂單第四頁
 @endsection
 
 @section('css')
 <link rel="stylesheet" href="{{asset('css/boostrap.css')}}">
     <link rel="stylesheet" href=" {{asset('css/checkedout4.css')}}">
+    <style>
+        main #section1{
+            height: unset;
+        }
+    </style>
 @endsection
 
 @section('main')

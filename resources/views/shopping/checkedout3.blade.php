@@ -7,6 +7,11 @@
 @section('css')
 <link rel="stylesheet" href="{{asset('css/boostrap.css')}}">
 <link rel="stylesheet" href="{{asset('css/checkedout3.css')}}">
+<style>
+    main #section1{
+        height: unset;
+    }
+</style>
 @endsection
 
 @section('main')

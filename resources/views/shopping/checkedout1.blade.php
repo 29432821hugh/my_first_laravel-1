@@ -17,8 +17,8 @@
 @section('main')
 
         <div class="banner .container-fluid">
-            <div class="list-detail">
-
+            <form action="/shopping2" method="post" class="list-detail">
+                @csrf
                 <!-- 上方進度條 -->
                 <div id="section1" class="container-xxl">
                     <!-- 購物車標題 -->
@@ -79,72 +79,33 @@
                     </div>
                     <!-- 訂單內容 -->
                     <div class="order-list">
+                        @foreach ($shopping as $item )
                         <div class="first-item d-flex justify-content-between">
                             <!-- 訂單內容左方區塊 -->
                             <div class="l-box d-flex">
                                 <!-- 商品照 -->
                                 <div class="goods-img">
-                                    <img src="{{asset('img/shopping-car-img/cute-cat.jpg')}}" alt="Goods-Photo">
+                                    <img src="{{ $item->product->img_path }}" alt="Goods-Photo">
                                 </div>
                                 <!-- 商品名稱&訂單編號 -->
                                 <div class="goods-info d-flex justify-content-center align-items-start">
-                                    <div class="name">Cute-kitten-miao-miao</div>
-                                    <div class="number">#94-koo-tsui</div>
+                                    <div class="name">{{$item->product->product_name}}</div>
+                                    <div class="number">{{$item->product->product_detail}}</div>
                                 </div>
                             </div>
                             <!-- 訂單內容右方區塊 -->
                             <div class="r-box d-flex align-items-center">
                                 <!-- 商品數量與商品價格 -->
-                                <div class="quantity"><i class="fa-solid fa-plus"></i>
-                                    <input type="text" placeholder="1"><i class="fa-solid fa-plus"></i>
+                                <div class="quantity">
+                                    <i class="fa-solid fa-minus"></i>
+                                    <input type="number" name="qty[]" value="{{$item->qty}}">
+                                    <i class="fa-solid fa-plus"></i>
                                 </div>
-                                <div class="sum-price"> $520.22</div>
+                                <div class="sum-price"> ${{$item->qty * $item->product->product_price}}</div>
                             </div>
                         </div>
-                        <div class="second-item d-flex justify-content-between">
-                            <!-- 訂單內容左方區塊 -->
-                            <div class="l-box d-flex">
-                                <!-- 商品照 -->
-                                <div class="goods-img">
-                                    <img src="{{asset('img/shopping-car-img/cute-cat.jpg')}}" alt="Goods-Photo">
-                                </div>
-                                <!-- 商品名稱&訂單編號 -->
-                                <div class="goods-info d-flex justify-content-center align-items-start">
-                                    <div class="name">Cute-kitten-miao-miao</div>
-                                    <div class="number">#94-koo-tsui</div>
-                                </div>
-                            </div>
-                            <!-- 訂單內容右方區塊 -->
-                            <div class="r-box d-flex align-items-center">
-                                <!-- 商品數量與商品價格 -->
-                                <div class="quantity"><i class="fa-solid fa-plus"></i>
-                                    <input type="text"  placeholder="1"><i class="fa-solid fa-plus"></i>
-                                </div>
-                                <div class="sum-price"> $520.22</div>
-                            </div>
-                        </div>
-                        <div class="third-item d-flex justify-content-between">
-                            <!-- 訂單內容左方區塊 -->
-                            <div class="l-box d-flex">
-                                <!-- 商品照 -->
-                                <div class="goods-img">
-                                    <img src="{{asset('img/shopping-car-img/cute-cat.jpg')}}" alt="Goods-Photo">
-                                </div>
-                                <!-- 商品名稱&訂單編號 -->
-                                <div class="goods-info d-flex justify-content-center align-items-start">
-                                    <div class="name">Cute-kitten-miao-miao</div>
-                                    <div class="number">#94-koo-tsui</div>
-                                </div>
-                            </div>
-                            <!-- 訂單內容右方區塊 -->
-                            <div class="r-box d-flex align-items-center">
-                                <!-- 商品數量與商品價格 -->
-                                <div class="quantity"><i class="fa-solid fa-plus"></i>
-                                    <input type="text" placeholder="1"><i class="fa-solid fa-plus"></i>
-                                </div>
-                                <div class="sum-price"> $520.22</div>
-                            </div>
-                        </div>
+                        @endforeach
+
 
                     </div>
                 </div>
@@ -155,19 +116,19 @@
                         <div class="price-box d-flex">
                             <div class="quantity d-flex justify-content-between">
                                 <h5>數量:</h5>
-                                <span>3</span>
+                                <span> {{ count($shopping) }}</span>
                             </div>
                             <div class="subtotal d-flex justify-content-between">
                                 <h5>小計:</h5>
-                                <span>520.22</span>
+                                <span>${{ $subtotal }}</span>
                             </div>
                             <div class="shipping-fee d-flex justify-content-between">
                                 <h5>運費:</h5>
-                                <span>520.22</span>
+                                <span>$100</span>
                             </div>
                             <div class="total d-flex justify-content-between">
                                 <h5>總計:</h5>
-                                <span>520.22</span>
+                                <span>${{$subtotal+100}}</span>
                             </div>
                         </div>
                     </div>
@@ -180,8 +141,8 @@
                                     class="fa-solid fa-arrow-left"></i>返回購物</a>
 
                         </div>
-                        <div class="r-button"><a class="btn btn-primary" href="#" role="button">下一步</a></div>
+                        <div class="r-button"><button class="btn btn-primary" type="submit" role="button">下一步</button></div>
                     </div>
                 </div>
-            </div>
+            </form>
 @endsection

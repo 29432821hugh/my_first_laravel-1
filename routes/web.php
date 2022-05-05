@@ -37,11 +37,12 @@ Route::get('/comment/update/{id}', [Controller::class, 'update_comment']);
 Route::get('/comment/delete/{id}', [Controller::class, 'delete_comment']);
 
 // 購物車相關路由
-Route::get('/shopping1', [ShoppingCartController::class, 'step01']);
-Route::get('/shopping2', [ShoppingCartController::class, 'step02']);
-Route::get('/shopping3', [ShoppingCartController::class, 'step03']);
-Route::get('/shopping4', [ShoppingCartController::class, 'step04']);
-
+Route::middleware(['auth'])->group(function () {
+    Route::get('/shopping1', [ShoppingCartController::class, 'step01']);
+    Route::post('/shopping2', [ShoppingCartController::class, 'step02']);
+    Route::post('/shopping3', [ShoppingCartController::class, 'step03']);
+    Route::post('/shopping4', [ShoppingCartController::class, 'step04']);
+});
 // 後台首頁
 Route::get('/dashboard', function () {
     return view('dashboard');
