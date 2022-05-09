@@ -16,7 +16,8 @@
 
 @section('main')
 <div class="banner .container-fluid">
-    <div class="list-detail">
+    <form action="/shopping4" method="POST" class="list-detail">
+        @csrf
         <!-- 上方進度條 -->
         <div id="section1" class="container-xxl">
             <!-- 購物車標題 -->
@@ -80,47 +81,46 @@
                     <!--姓名 -->
                     <div class="name">
                         <div class="mb-1">
-                            <label for="formGroupExampleInput" class="form-label">
+                            <label for="name" class="form-label">
                                 <h5>姓名</h5>
                             </label>
-                            <input type="text" class="form-control" id="formGroupExampleInput"
-                                placeholder="千夜未來">
+                            <input type="text" class="form-control" id="name" name="name">
                         </div>
                     </div>
                     <!-- 電話 -->
                     <div class="tel">
                         <div class="mb-1">
-                            <label for="formGroupExampleInput2" class="form-label">
+                            <label for="phone" class="form-label">
                                 <h5>電話</h5>
                             </label>
-                            <input type="text" class="form-control" id="formGroupExampleInput2"
-                                placeholder="0922-520-222">
+                            <input type="text" class="form-control" id="phone" name="phone" >
                         </div>
                     </div>
                     <!-- 電子郵件 -->
                     <div class="email">
                         <div class="mb-1">
-                            <label for="formGroupExampleInput" class="form-label">
+                            <label for="email" class="form-label">
                                 <h5>E-mail</h5>
                             </label>
-                            <input type="text" class="form-control" id="formGroupExampleInput"
-                                placeholder="kittenIsCute@gmail.com">
+                            <input type="text" class="form-control" id="email" name="email">
                         </div>
                     </div>
                     <!--戶籍資料 -->
                     <div class="address">
                         <div class="mb-1">
-                            <label for="formGroupExampleInput2" class="form-label">
-                                <h5>地址</h5>
+                            <label for="address" class="form-label">
+                                <h5>
+                                    @if ($deliver == 1)
+                                    地址
+                                    @else
+                                    超商地址
+                                    @endif
+                                </h5>
                             </label>
                             <div class="type-box">
-                                <input type="text" class="form-control-city" id="formGroupExampleInput2"
-                                    placeholder="城市">
-
-                                <input type="text" class="form-control-code" id="formGroupExampleInput2"
-                                    placeholder="郵遞區號">
-                                <input type="text" class="form-control-address" id="formGroupExampleInput2"
-                                    placeholder="地址">
+                                <input type="text" class="form-control-city" id="address" name="city" placeholder="台中市太平區">
+                                <input type="text" class="form-control-code"  name="code" placeholder="411011">
+                                <input type="text" class="form-control-address" name="address" placeholder="中山路一段388號">
                             </div>
                         </div>
                     </div>
@@ -158,7 +158,7 @@
                 <div class="l-button"><a class="btn btn-primary" href="#" role="button">上一步</a>
 
                 </div>
-                <div class="r-button"><a class="btn btn-primary" href="#" role="button">前往付款</a></div>
+                <div class="r-button"><button class="btn btn-primary" type="submit" role="button">前往付款</button></div>
             </div>
         </div>
     </div>

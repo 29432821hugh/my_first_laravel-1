@@ -42,6 +42,8 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/shopping2', [ShoppingCartController::class, 'step02']);
     Route::post('/shopping3', [ShoppingCartController::class, 'step03']);
     Route::post('/shopping4', [ShoppingCartController::class, 'step04']);
+    Route::get('/show_order/{id}', [ShoppingCartController::class, 'show_order']); //展示訂單
+
 });
 // 後台首頁
 Route::get('/dashboard', function () {
