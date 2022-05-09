@@ -11,6 +11,8 @@ use Illuminate\Http\Request;
 use App\Models\Comment;
 use App\Models\Product;
 use App\Models\ShoppingCart;
+use App\Models\Order;
+
 
 use Illuminate\Support\Facades\Auth;
 
@@ -141,5 +143,12 @@ class Controller extends BaseController
         Comment::where('id', $id)->delete();
 
         return redirect('/comment');
+    }
+
+    public function order_list(){
+
+        $orders = Order::where('user_id', Auth::id())->get();
+
+        return view('order_list',compact('orders'));
     }
 }

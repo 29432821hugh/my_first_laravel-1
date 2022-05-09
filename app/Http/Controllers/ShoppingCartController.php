@@ -110,7 +110,7 @@ class ShoppingCartController extends Controller
             'subtotal' => $subtotal,
             'shipping_fee' => $fee ,
             'total' => $subtotal + $fee,
-            'product_qty' => count(session()->get('amount')),
+            'product_qty' => count($merch),
             'name' => $request->name,
             'phone' => $request->phone,
             'email' => $request->email,
@@ -140,6 +140,10 @@ class ShoppingCartController extends Controller
                 'order_id' =>  $order->id,
             ]);
         }
+        // 訂單建立成功, 將購物車資料清除
+
+        ShoppingCart::where('user_id', Auth::id())->delete();
+
         return redirect('/show_order/'.$order->id);
     }
 

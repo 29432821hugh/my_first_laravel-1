@@ -1,18 +1,27 @@
-@extends('template.template')
+@extends('layouts.app')
+
 
 @section('pageTitle')
-    訂單第四頁
+   商品管理-編輯頁
 @endsection
 
 @section('css')
-    <link rel="stylesheet" href="{{ asset('css/boostrap.css') }}">
-    <link rel="stylesheet" href=" {{ asset('css/checkedout4.css') }}">
-    <style>
-        main #section1 {
-            height: unset;
-        }
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 
-    </style>
+<meta name="_token" content="{{ csrf_token() }}">
+<link rel="stylesheet" href="{{ asset('css/boostrap.css') }}">
+<link rel="stylesheet" href=" {{ asset('css/checkedout4.css') }}">
+<style>
+    main #section1 {
+        height: unset;
+    }
+    #ps{
+        width: 100%;
+        height: 60px;
+        resize: none;
+    }
+</style>
 @endsection
 
 @section('main')
@@ -22,60 +31,12 @@
             <div id="section1" class="container-xxl">
                 <!-- 購物車標題 -->
                 <div class="shop-car">
-                    <h3>購物車</h3>
+                    <h3>訂單管理 - 修改狀態</h3>
                 </div>
-                <!-- 進度表 -->
-                <div class="progress-container">
-                    <div class="progress">
-                        <div class="box1">
-                            <div class="box1-t d-flex">
-                                <div class="l-line"></div>
-                                <div class="step1 d-flex ">1</div>
-                                <div class="r-line"></div>
-                            </div>
-                            <div class="box1-b">
-                                <li>確認購物車</li>
-                            </div>
-                        </div>
-                        <div class="box2">
-                            <div class="box2-t d-flex">
-                                <div class="l-line"></div>
-                                <div class="step2 d-flex ">2</div>
-                                <div class="r-line"></div>
-                            </div>
-                            <div class="box2-b">
-                                <li>付款與運送方式</li>
-                            </div>
-                        </div>
-                        <div class="box3">
-                            <div class="box3-t d-flex">
-                                <div class="l-line"></div>
-                                <div class="step3 d-flex ">3</div>
-                                <div class="r-line"></div>
-                            </div>
-                            <div class="box3-b">
-                                <li>填寫資料</li>
-                            </div>
-                        </div>
-                        <div class="box4">
-                            <div class="box4-t d-flex">
-                                <div class="l-line"></div>
-                                <div class="step4 d-flex ">4</div>
-                                <div class="r-line"></div>
-                            </div>
-                            <div class="box4-b">
-                                <li>完成訂購</li>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+
             </div>
             <!-- 中間內容：訂單資訊確認 -->
             <div id="section2">
-                <!-- 訂單成立 -->
-                <div class="order-title">
-                    <h1>訂單成立</h1>
-                </div>
                 <!-- 訂單明細 -->
                 <div class="order-list">
                     <div class="list-title">
@@ -170,14 +131,33 @@
                 </div>
             </div>
             <!-- 底部按鈕 -->
-            <div id="section4">
+            <form id="section4" action="/order/update/{{$order->id}}" method="post">
+                @csrf
+                <!-- 訂單狀態以及備註 -->
+                    {{-- 1->訂單成立(未付款), 2->已付款, 3->已出貨, 4->已結單, 5->已取消 --}}
+                <h2>訂單狀態</h2>
+                <select name="status" id="status">
+                    <option value="1" @if ($order->status == 1) selected @endif>未付款</option>
+                    <option value="2" @if ($order->status == 2) selected @endif>已付款</option>
+                    <option value="3" @if ($order->status == 3) selected @endif>已出貨</option>
+                    <option value="4" @if ($order->status == 4) selected @endif>已結單</option>
+                    <option value="5" @if ($order->status == 5) selected @endif>已取消</option>
+                </select>
+
+                <h2>訂單備註</h2>
+                <textarea name="ps" id="ps" >{{$order->ps}}</textarea>
+
                 <!-- 功能按鈕 -->
                 <div class="button-box d-flex justify-content-end">
+                    <div class="l-button">
+                        <a class="btn btn-primary" href="#" role="button">
+                            <i class="fa-solid fa-arrow-left"></i>取消修改</a>
+                    </div>
                     <div class="r-button">
-                        <a class="btn btn-primary" href="/" role="button">返回首頁</a>
+                        <button class="btn btn-primary" type="submit" role="button">修改狀態</button>
                     </div>
                 </div>
-            </div>
+            </form>
         </div>
     </div>
 @endsection

@@ -7,6 +7,8 @@ use App\Http\Controllers\ShoppingCartController;
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\BannerController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\OrderController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -28,13 +30,16 @@ Route::get('/product_detail/{id}', [Controller::class, 'product']);
 Route::post('/add_to_cart', [Controller::class, 'add_cart']);
 
 
-
 // 留言相關路由
 Route::get('/comment', [Controller::class, 'comment']);
 Route::post('/comment/store', [Controller::class, 'save_comment']);
 Route::get('/comment/edit/{id}', [Controller::class, 'edit_comment']);
 Route::get('/comment/update/{id}', [Controller::class, 'update_comment']);
 Route::get('/comment/delete/{id}', [Controller::class, 'delete_comment']);
+
+//檢視訂單列表
+Route::get('/order_list', [Controller::class, 'order_list']);
+
 
 // 購物車相關路由
 Route::middleware(['auth'])->group(function () {
@@ -43,7 +48,6 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/shopping3', [ShoppingCartController::class, 'step03']);
     Route::post('/shopping4', [ShoppingCartController::class, 'step04']);
     Route::get('/show_order/{id}', [ShoppingCartController::class, 'show_order']); //展示訂單
-
 });
 // 後台首頁
 Route::get('/dashboard', function () {
@@ -85,6 +89,12 @@ Route::prefix('/product')->middleware(['auth','power'])->group(function () {
     Route::delete('/delete/{id}', [AccountController::class, 'destroy']); //刪除 D
 });
 
+// 訂單管理相關路由
+Route::prefix('/order')->middleware(['auth','power'])->group(function () {
+    Route::get('/', [OrderController::class, 'index']); //總表,列表頁 = Read
+    Route::get('/edit/{id}', [OrderController::class, 'edit']); //編輯頁 U
+    Route::post('/update/{id}', [OrderController::class, 'update']); //更新  U
+});
 //BANNER管理相關頁面  手工建立版本 (諄照resful API 的規定)
 // Route::get('/banner', [BannerController::class, 'index']); //總表,列表頁
 // Route::post('/banner', [BannerController::class, 'store']); //儲存

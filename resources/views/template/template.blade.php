@@ -42,12 +42,10 @@
                 @auth
 
                 {{-- 如果帳號是管理者  要顯示後台的連結 --}}
-                @if (Auth::user()->power == 1)
-                <li class="nav-item">
-                    <a href="/dashboard" class="nav-link">後台</a>
-                </li>
-                @endif
 
+                <li class="nav-item">
+                    <a href="/order_list" class="nav-link">訂單列表</a>
+                </li>
 
                 <li class="nav-item">
                     <a class="nav-link">{{ Auth::user()->name}}, 您好</a>
@@ -59,6 +57,11 @@
                         @csrf
                     </form>
                 </li>
+                @if (Auth::user()->power == 1)
+                <li class="nav-item">
+                    <a href="/dashboard" class="nav-link">後台</a>
+                </li>
+                @endif
                 @endauth
                 @guest
                 <li class="nav-item">
