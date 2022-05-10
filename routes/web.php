@@ -23,6 +23,16 @@ use App\Http\Controllers\OrderController;
 // 首頁
 Route::get('/', [Controller::class, 'index']);
 
+Route::get('/test',function(){
+
+    $info = ['owner_number'=> 'A123456','owner_name' => 'John','car_color' => 'red'];
+
+    foreach ($info as $key => $value) {
+        dump($key.':'.$value);
+    }
+
+});
+
 // 商品詳情
 Route::get('/product_detail/{id}', [Controller::class, 'product']);
 

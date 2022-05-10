@@ -122,7 +122,7 @@
 
             minus.onclick = function(){
                 // 用parseInt 將字串轉換為數字
-                if (parseInt(qty.value) >= 2){
+                if (parseInt(qty.value)> 1){
                     qty.value = parseInt(qty.value) - 1
                 }
             }
@@ -140,6 +140,7 @@
                 formData.append('product_id',  {!! $product->id !!});
                 formData.append('_token',  '{!! csrf_token() !!}');
                 // 利用fetch將form表單送過去
+
                 fetch('/add_to_cart', {
                     method: 'POST',
                     body: formData
@@ -161,6 +162,8 @@
 
                 });
             }
+
+
         </script>
 
 @endsection

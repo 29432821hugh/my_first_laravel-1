@@ -52,31 +52,27 @@ class Controller extends BaseController
                 'result' => 'error',
                 'message'  => '欲購買數量超過庫存，請聯絡客服',
             ];
-            return $result;
         }elseif ($request->add_qty < 1) {
             $result = [
                 'result' => 'error',
                 'message'  => '購買數量異常，請重新確認',
             ];
-            return $result;
-        }
+        }elseif(!Auth::check()){
         //檢查是否有登入 !Auth::check() 因為有加上! 反轉判斷結果, 所以現在 沒有登入 = true
-        if (!Auth::check()){
             $result = [
                 'result' => 'error',
                 'message'  => '尚未登入, 請先登入',
             ];
-            return $result;
+        }else{
+            ShoppingCart::create([
+                'product_id'=> $request->product_id,
+                'user_id'=> Auth::user()->id,
+                'qty'=> $request->add_qty,
+            ]);
+            $result = [
+                'result' => 'success',
+            ];
         }
-
-        ShoppingCart::create([
-            'product_id'=> $request->product_id,
-            'user_id'=> Auth::user()->id,
-            'qty'=> $request->add_qty,
-        ]);
-        $result = [
-            'result' => 'success',
-        ];
         return $result;
 
     }
