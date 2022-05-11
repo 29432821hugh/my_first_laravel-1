@@ -5,11 +5,11 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use App\Models\ShoppingCart;
 use App\Models\Order;
 use App\Models\OrderDetail;
-
-
+use App\Mail\OrderComplete;
 
 class ShoppingCartController extends Controller
 {
@@ -141,8 +141,18 @@ class ShoppingCartController extends Controller
             ]);
         }
         // 訂單建立成功, 將購物車資料清除
-
         ShoppingCart::where('user_id', Auth::id())->delete();
+
+
+        // 訂單建立成功, 寄信通知使用者
+
+        $data = [
+            'order_id' => $order->id,
+            'user_name' => Auth::user()->name,
+            'subject' => '來自好友的通知'
+        ];
+
+        Mail::to(Auth::user()->email)->send(new OrderComplete($data));
 
         return redirect('/show_order/'.$order->id);
     }

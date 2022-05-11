@@ -38,6 +38,8 @@ Route::get('/product_detail/{id}', [Controller::class, 'product']);
 
 // 接受加入購物車請求
 Route::post('/add_to_cart', [Controller::class, 'add_cart']);
+Route::post('/delete_from_cart/{id}', [Controller::class, 'delete_cart']);
+
 
 
 // 留言相關路由

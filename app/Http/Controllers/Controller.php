@@ -77,7 +77,11 @@ class Controller extends BaseController
 
     }
 
+    public function delete_cart($id){
 
+        ShoppingCart::find($id)->delete();
+        return redirect('/shopping1');
+    }
     public function comment(){ // 這段comment功能的目的是為了抓取資料庫所有的留言回傳給頁面
 
         // 以下這行使用orderby將最新的排序到最前面後, 取出所有資料

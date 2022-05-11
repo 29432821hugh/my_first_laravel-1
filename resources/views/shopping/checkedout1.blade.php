@@ -11,6 +11,15 @@
         main #section1{
             height: unset;
         }
+        main *{
+            font-size: 20px;
+        }
+        main .banner .list-detail #section2 .order-list .first-item .r-box{
+            width: 250px;
+        }
+        main .banner .list-detail #section2 .order-list .first-item .r-box .quantity input{
+            width: 60px;
+        }
     </style>
 @endsection
 
@@ -90,7 +99,10 @@
                                 <!-- 商品名稱&訂單編號 -->
                                 <div class="goods-info d-flex justify-content-center align-items-start">
                                     <div class="name">{{$item->product->product_name}}</div>
-                                    <div class="number">{{$item->product->product_detail}}</div>
+                                    <div class="number"
+                                        data-product_qty="{{$item->product->product_qty}}"
+                                        data-product_price="{{$item->product->product_price}}"
+                                        >{{$item->product->product_detail}}</div>
                                 </div>
                             </div>
                             <!-- 訂單內容右方區塊 -->
@@ -98,10 +110,11 @@
                                 <!-- 商品數量與商品價格 -->
                                 <div class="quantity">
                                     <i class="fa-solid fa-minus"></i>
-                                    <input type="number" name="qty[]" value="{{$item->qty}}">
+                                    <input type="number" name="qty[]" class="qty" value="{{$item->qty}}" readonly>
                                     <i class="fa-solid fa-plus"></i>
                                 </div>
                                 <div class="sum-price"> ${{$item->qty * $item->product->product_price}}</div>
+                                <div class="btn btn-danger" onclick="delete_cart('{{$item->id}}')">刪除</div>
                             </div>
                         </div>
                         @endforeach
@@ -124,11 +137,11 @@
                             </div>
                             <div class="shipping-fee d-flex justify-content-between">
                                 <h5>運費:</h5>
-                                <span>$100</span>
+                                <span>$150</span>
                             </div>
                             <div class="total d-flex justify-content-between">
                                 <h5>總計:</h5>
-                                <span>${{$subtotal+100}}</span>
+                                <span>${{$subtotal+150}}</span>
                             </div>
                         </div>
                     </div>
@@ -137,12 +150,84 @@
                 <div id="section4">
                     <!-- 功能按鈕 -->
                     <div class="button-box d-flex justify-content-between">
-                        <div class="l-button"><a class="btn btn-primary" href="#" role="button"><i
-                                    class="fa-solid fa-arrow-left"></i>返回購物</a>
-
+                        <div class="l-button">
+                            <a class="btn btn-primary" href="/" role="button">
+                                <i class="fa-solid fa-arrow-left"></i>返回購物
+                            </a>
                         </div>
                         <div class="r-button"><button class="btn btn-primary" type="submit" role="button">下一步</button></div>
                     </div>
                 </div>
             </form>
+@endsection
+
+
+@section('js')
+
+    <script>
+        const minus = document.querySelectorAll('.fa-minus')
+        const plus = document.querySelectorAll('.fa-plus')
+        const qty = document.querySelectorAll('.qty')
+        const sum_price = document.querySelectorAll('.sum-price')
+        // 為了知道各個產品所剩數量方便判斷 所以將資料印在html中, 再使用JS抓進來
+        const number = document.querySelectorAll('.number')
+
+        // 小計與總計的元素
+        const subtotal = document.querySelector('.subtotal span')
+        const total = document.querySelector('.total span')
+
+
+        for (let i = 0; i < minus.length; i++) {
+            minus[i].onclick = function(){
+
+                if (parseInt(qty[i].value)> 1){
+                    qty[i].value = parseInt(qty[i].value) - 1
+                    // 重新計算價格 (商品單價*數量)
+                    sum_price[i].innerHTML = '$' + (parseInt(number[i].dataset.product_price) * parseInt(qty[i].value))
+                }
+                get_total()
+            }
+
+            plus[i].onclick = function(){
+
+                if (parseInt(qty[i].value) < parseInt(number[i].dataset.product_qty) ){
+                    qty[i].value = parseInt(qty[i].value) + 1
+                    sum_price[i].innerHTML = '$' + (parseInt(number[i].dataset.product_price) * parseInt(qty[i].value))
+                }
+                get_total()
+            }
+        }
+
+
+        function get_total(){
+            // 計算所有品項的金額 並加總
+            var sum = 0
+            for (let j = 0; j < minus.length; j++) {
+                sum += parseInt(number[j].dataset.product_price) * parseInt(qty[j].value)
+            }
+            subtotal.innerHTML = '$' + sum
+            total.innerHTML = '$' + (sum + 150)
+        }
+
+        function delete_cart(id){
+            var form = new FormData();
+            form.append('_token',  '{!! csrf_token() !!}');
+            fetch('/delete_from_cart/'+ id, {
+                method: 'POST',
+                body: form
+            }).then(res => {
+                // 使用js重新整理網頁 dirty but work
+                location.reload()
+            })
+
+
+        }
+
+    </script>
+
+
+
+
+
+
 @endsection
